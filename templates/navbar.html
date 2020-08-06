@@ -1,0 +1,45 @@
+{% load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
+
+<nav>
+    {% url 'index' as index_url %}
+    <span>
+        {% if request.path == index_url %}HOME{% else %}
+            <a href="{% url 'index' %}">HOME</a>
+        {% endif %}
+    </span>
+    {% url 'about' as about_url %}
+    <span>
+        {% if request.path == about_url %}ABOUT{% else %}
+            <a href="{% url 'about' %}">ABOUT</a>
+        {% endif %}
+    </span>
+
+{#    For login procedure#}
+
+    {% url 'login' as login_url %}
+    <span style="float: right">
+{#    If user exists#}
+        {% if user.is_authenticated %}
+            {% url 'profile' as profile_url %}
+            <span>
+{#            if user is on profile page just show name without link on name#}
+                {% if request.path == profile_url %}
+                    {{ user.username }}
+{#              show link to profile with name#}
+                {% else %}
+                    <a href="{{ profile_url }}">
+                        {{ user.username }}
+                    </a>
+                {% endif %}
+            </span>
+            <span><a href="{% url 'logout' %}">LOGOUT</a></span>
+        {% else %}
+            <span>
+                {% if request.path == login_url %}LOGIN{% else %}
+                <a href="{% url 'login' %}">LOGIN</a>
+                {% endif %}
+            </span>
+        {% endif %}
+    </span>
+</nav>

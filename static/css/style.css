@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+* {
+    margin: 0;
+    font-family: "Dosis", sans-serif;
+}
+
+/*###################################################*/
+/*################### Navbar ####################*/
+/*###################################################*/
+
+nav {
+    background: #333;
+    padding: 10px;
+    color: white;
+}
+
+nav a {
+    color: white;
+}
+
+nav span {
+    margin:0 10px;
+}
+
+main {
+    height: 100%;
+}
+
+/*###################################################*/
+/*################### Search bar ####################*/
+/*###################################################*/
+
+.secondary-bar {
+    background: #555;
+}
+
+.secondary-bar input[type=text]{
+    background: #777;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    margin: 5px 0 5px 20px;
+    color: white;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.secondary-bar input[type=submit]{
+    background: cadetblue;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.secondary-bar span {
+    display: inline-block;
+}
+
+.right {
+    margin: 5px 30px 0 0;
+}
+
+/*###################################################*/
+/*################## Output Screen ##################*/
+/*###################################################*/
+
+.output-screen {
+    display: flex;font-family: "Dosis", sans-serif;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.movie_container {
+    width: 206px;
+    margin-top: 100px;
+}
+
+.movie_container img {
+    width: 200px;
+    height: 300px;
+    border: 3px solid #555555;
+}
+
+.movie_container h3 {
+    background: #555555;
+    color: white;
+    height: 50px;
+    text-align: center;
+}

@@ -1,0 +1,8 @@
+<div class="output-screen">
+        {% for item in data %}
+        <div class="movie_container">
+            <img src={{ item.1 }}>
+            <h3>{{ item.0 }}</h3>
+        </div>
+        {% endfor %}
+</div>

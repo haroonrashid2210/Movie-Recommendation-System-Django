@@ -1,0 +1,18 @@
+{% load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
+
+<div class="secondary-bar">
+    <span>
+        <form action="/SearchMovie/" method="post">
+            {% csrf_token %}
+            <input type="text" name="search_box" placeholder="Search">
+            <input type="submit" name="search_btn" value="SEARCH">
+        </form>
+    </span>
+    <span class="right" style="float:right;">
+        <form action="/imdbTOP/" method="post">
+            {% csrf_token %}
+            <input type="submit" name="search_btn" value="IMDB TOP">
+        </form>
+    </span>
+</div>
