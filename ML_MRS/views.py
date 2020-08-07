@@ -29,6 +29,8 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/profile.html'
 
 
+# checks whether the movie is present in dataset to prevent errors
+# if movie is present return true else false
 def isMoviePresent(movie_name):
     file = open('/home/harry/PycharmProjects/djangoProject/main/movie_dataset.csv', 'r')
     reader = csv.reader(file)
@@ -38,6 +40,8 @@ def isMoviePresent(movie_name):
     return False
 
 
+# fetch movie id from dataset and return a list
+# movie_detail = [movie id, movie name]
 def getMovieDetail(movie_name):
     try:
         file = open('/home/harry/PycharmProjects/djangoProject/main/movie_dataset.csv', 'r')
@@ -52,6 +56,8 @@ def getMovieDetail(movie_name):
         return movie_name
 
 
+# request movie detail from TMDB api and return poster url
+# poster url is generated using prefix url + poster path
 def getMoviePoster(movie_id):
     try:
         response = requests.get(
@@ -62,6 +68,7 @@ def getMoviePoster(movie_id):
         return blank_poster_url
 
 
+# searches the movie and return top 4 similar movies
 def SearchMovie(request):
     searched = request.POST.get('search_box')
 
@@ -69,28 +76,41 @@ def SearchMovie(request):
     if not isMoviePresent(searched):
         return render(request, 'base.html', {'message': 'Movie not found!'})
 
+    # Reading data - set
     f = open('/home/harry/PycharmProjects/djangoProject/main/movie_dataset.csv')
     df = pd.read_csv(f)
+
+    # extracting useful features
     features = ['keywords', 'cast', 'genres', 'director']
 
+    # combining the features as a single string
     def combine_features(row):
         return row['keywords'] + " " + row['cast'] + " " + row["genres"] + " " + row["director"]
 
+    # filling null entries with empty string i.e. ''
     for feature in features:
         df[feature] = df[feature].fillna('')
+
+    # applying combined_features() method over each rows of dataframe and storing the combined string in
+    # “combined_features” column
     df["combined_features"] = df.apply(combine_features, axis=1)
+
     cv = CountVectorizer()
+
+    # feeding combined strings(movie contents) to CountVectorizer() object
     count_matrix = cv.fit_transform(df["combined_features"])
+
+    # calculating cosine_similarity
     cosine_sim = cosine_similarity(count_matrix)
 
+    # helper functions to get movie title from movie index and vice-versa.
     def get_title_from_index(index):
         return df[df.index == index]["title"].values[0]
 
     def get_index_from_title(title):
         return df[df.title == title]["index"].values[0]
 
-    movie_user_likes = searched
-    movie_index = get_index_from_title(movie_user_likes)
+    movie_index = get_index_from_title(searched)
     similar_movies = list(enumerate(cosine_sim[movie_index]))
     sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
     i = 0
@@ -107,6 +127,7 @@ def SearchMovie(request):
     return render(request, 'base.html', {'data': movie_list})
 
 
+# displays top movies
 def imdbTOP(request):
     top_list = getTOPMovies()
     movie_list = []
